@@ -5,7 +5,7 @@ function Home(){
 
     return(
         <div>
-            <h1>Welcome to the Events Page!</h1>
+            <h1>Welcome!</h1>
         </div>
     )
 }
