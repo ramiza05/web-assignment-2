@@ -1,15 +1,24 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { registerEvent } from "./registrationSlice";
+import { current } from "@reduxjs/toolkit";
 
 const API_URL = "https://app.ticketmaster.com/discovery/v2";
 
 function EventDetails(){
     const {eventId} = useParams();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [event, setEvent] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [message, setMessage] = useState("");
+
+    const currentUser = useSelector((state) => state.user.currentUser);
+    const registrations = useSelector((state)=>state.registrations);
+
 
     useEffect(() =>{
         async function loadEvent(){
@@ -41,7 +50,9 @@ function EventDetails(){
         return<p>Loading Event Details...</p>
     }
     if (error){
-        return alert({error});
+        setError("Could not load event details. Please try again.");
+        console.error(error);
+
     }
     if (!event){
         return <p>Event not found!</p>;
@@ -51,7 +62,28 @@ function EventDetails(){
     const date = event.dates?.start?.localDate;
     const time = event.dates?.start?.localTime;
     const category = event.classifications?.[0]?.segment?.name;
+    const isRegistered = Array.isArray(registrations) &&
+    registrations.some(
+        (registration) =>
+            registration.userId === currentUser?.id &&
+            registration.eventId === event.id
+    );
 
+    function handleRegistration(){
+        if (!currentUser){
+            setMessage("Please Log in to register for an event!");
+            return;
+        }
+
+        if (isRegistered){
+            setMessage("Event Already Registered!");
+            return;
+        }
+
+        dispatch((registerEvent({userId: currentUser.id, eventId:event.id, eventName: event.name, eventDate: date || "", eventTime: time || "", venue: venue?.name || "VENUE TO BE ANNOUNCED", location: [venue?.city?.name, venue?.state?.name, venue?.country?.name].filter(Boolean).join(", "), category: category || "No category specified!", image: event.images?.[0].url || "", eventUrl: event.url || "", registeredAt: new Date().toISOString()})))
+
+        setMessage("Successfully registered for this event!");
+    }
 
     return (
         <div>
@@ -59,6 +91,12 @@ function EventDetails(){
 
             <h1>{event.name}</h1>
             {event.images?.[0] && (<img src={event.images[0].url} alt={event.name}/>)}
+
+            <h2>Event Registration</h2>
+            {currentUser? (<button onClick={handleRegistration} disabled={isRegistered}>{isRegistered? "Already Registered" : "Register for Event"}</button>) :
+            (<button onClick={() => navigate("/Login")}>Login to Register</button>)}
+
+            {message && <p role="status">{message}</p>}
 
             <p><strong>Date:</strong> {date || "To be announced"}</p>
             <p><strong>Time:</strong> {time || "To be announced"}</p>

@@ -9,6 +9,7 @@ import Login from "./login"
 import Events from "./events"
 import ProtectedEventRoute from "./protectedEventRoute";
 import EventDetails from "./eventDetails.jsx"
+import MyEvents from "./MyEvents.jsx";
 
 import './App.css'
 
@@ -24,6 +25,7 @@ function App() {
       <Route path="/Login" element={<Login/>}/>
       <Route path="/Events" element={<ProtectedEventRoute><Events/></ProtectedEventRoute>}/>
       <Route path="/Events/:eventId" element={<ProtectedEventRoute> <EventDetails /> </ProtectedEventRoute>}/>
+      <Route path="/MyEvents"element={<ProtectedEventRoute><MyEvents /></ProtectedEventRoute>}/>
     </Routes>
     </BrowserRouter>
   )
