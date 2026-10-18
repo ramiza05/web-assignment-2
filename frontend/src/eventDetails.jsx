@@ -87,7 +87,7 @@ function EventDetails(){
 
     return (
         <div>
-            <button onClick={()=>navigate(-1)}>Back to Events</button>
+            <button onClick={()=>navigate(-1)}>Back</button>
 
             <h1>{event.name}</h1>
             {event.images?.[0] && (<img src={event.images[0].url} alt={event.name}/>)}

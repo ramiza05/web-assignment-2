@@ -54,6 +54,7 @@ function MyEvents(){
 
     return(
         <div>
+            <button onClick={()=>navigate(-1)}>Back</button>
             <h1>My Events</h1>
             <p>Events you have registered for.</p>
 

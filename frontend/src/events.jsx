@@ -54,7 +54,7 @@ function Events(){
     return(
         <div>
             <h1>Welcome to the Events Page!</h1>
-            <h1>Welcome, {currentUser?.name}!</h1>
+            <h1>Welcome, {currentUser.name}!</h1>
             <button onClick={loggingout}>Log Out</button>
 
             <h2>Explore Events</h2>
