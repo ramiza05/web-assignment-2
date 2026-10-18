@@ -6,7 +6,7 @@ export async function fetchEvents({
     page = 0
 }={}) 
 {
-    const apiKey = import.meta.env.TICKETMASTER_API_KEY;
+    const apiKey = import.meta.env.VITE_TICKETMASTER_API_KEY;
 
     if(!apiKey){
         throw new Error("Ticket Master API key is missing!");
@@ -28,11 +28,11 @@ export async function fetchEvents({
         params.set("classificiationName", category);
     }
 
-    const respone = await fetch(
+    const response = await fetch(
         `${API_URL}/events.json?${params.toString()}`
     );
 
-    if (!respone.ok){
+    if (!response.ok){
         throw new Error(`API error!: ${response.status}`);
         
     }

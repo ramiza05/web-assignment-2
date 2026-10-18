@@ -49,7 +49,27 @@ function Events(){
             {error && <p>{error}</p>}\
 
             {!loading && !error && events.length===0 && <p>No events found!</p>}
-            
+
+            <div>
+                {events.map((event)=>(
+                    <article key={event.id}>
+                        {event.images?.[0] && (<img src={event.images[0].url} alt={event.name}></img>)}
+
+                        <h3>{event.name}</h3>
+                        <p>
+                            {event.dates?.start.localDate || "Date TO BE ANNOUNCED"}
+                            {event.dates?.start.localTime && ` at ${event.dates.start.localTime}`}
+                        </p>
+
+                        <p>
+                            {events._embedded?.venues?.[0]?.name || "Venue TO BE ANNOUNCED"}
+                        </p>
+                        <p>
+                            {events._embedded?.venues?.[0].city?.name || ""}
+                        </p>
+                    </article>
+                ))}
+            </div>
         </div>
     )
 }
