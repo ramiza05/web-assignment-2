@@ -41,7 +41,7 @@ function Register() {
         <label>Email</label>
         <input type="text" value={emailOne} onChange={(e) => (setEmailOne(e.target.value))} placeholder="Email Address"></input>
         <label>Password</label>
-        <input type="text" value={passwordOne} onChange={(e) => (setPasswordOne(e.target.value))} placeholder="Password"></input>
+        <input type="password" value={passwordOne} onChange={(e) => (setPasswordOne(e.target.value))} placeholder="Password"></input>
         <input type="submit" value="Register" ></input>
       </form>
     </div>

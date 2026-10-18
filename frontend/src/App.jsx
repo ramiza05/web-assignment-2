@@ -9,7 +9,7 @@ import Login from "./login"
 import Events from "./events"
 import ProtectedEventRoute from "./protectedEventRoute";
 import EventDetails from "./eventDetails.jsx"
-import MyEvents from "./MyEvents.jsx";
+import MyEvents from "./myEvents.jsx";
 
 import './App.css'
 
