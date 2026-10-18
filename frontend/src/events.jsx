@@ -10,6 +10,11 @@ function Events(){
     const dispatch = useDispatch();
     const currentUser = useSelector((state) => state.user.currentUser);
 
+    const handleSearch = (event) => {
+        event.preventDefault();
+        setSearchKeyword(keyword.trim()); 
+    };
+
     const loggingout = () => {
         console.log("Logout button clicked"); // temporary test
         dispatch(logOut());
@@ -19,24 +24,33 @@ function Events(){
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [keyword, setKeyword] = useState("");
+    const [searchKeyword, setSearchKeyword] = useState("");
+    const [category, setCategory] = useState("");
 
     useEffect(() => {
         async function loadEvents() {
-            try{
-                const results = await fetchEvents();
-                setEvents(results);
-            }
-            catch(err){
-                setError(err.message || "Event loading has failed!");
-            }
-            finally{
-                setLoading(false);
-            }
+            setLoading(true);
+            setError("");
+
+        try {
+            const results = await fetchEvents({
+            keyword: searchKeyword,
+            category
+            });
+
+            setEvents(results);
+        } catch (err) {
+            setError(err.message || "Failed to load events.");
+        } finally {
+            setLoading(false);
         }
+    }
 
-        loadEvents();
-    }, [])
+    loadEvents();
+    }, [searchKeyword, category])
 
+    
     return(
         <div>
             <h1>Welcome to the Events Page!</h1>
@@ -49,6 +63,22 @@ function Events(){
             {error && <p>{error}</p>}\
 
             {!loading && !error && events.length===0 && <p>No events found!</p>}
+
+            <form onSubmit={handleSearch}>
+                <input type="search" placeholder="Search artists, teams, or events..." value={keyword} onChange={(event) => setKeyword(event.target.value)}/>
+                <button type="submit">Search</button>
+                <button type="button" onClick={() => { setKeyword(""); setSearchKeyword(""); setCategory("");}}>Clear filters</button>
+            </form>
+
+            <label htmlFor="category">Category: </label>
+            <select id="category" value={category} onChange={(event) => setCategory(event.target.value)}>
+                <option value="">All categories</option>
+                <option value="Music">Music</option>
+                <option value="Sports">Sports</option>
+                <option value="Arts & Theatre">Arts & Theatre</option>
+                <option value="Film">Film</option>
+                <option value="Miscellaneous">Miscellaneous</option>
+            </select>
 
             <div>
                 {events.map((event)=>(
@@ -66,6 +96,9 @@ function Events(){
                         </p>
                         <p>
                             {events._embedded?.venues?.[0].city?.name || ""}
+                        </p>
+                        <p>
+                            {events.classifications?.[0]?.segment?.name || ""}
                         </p>
                     </article>
                 ))}

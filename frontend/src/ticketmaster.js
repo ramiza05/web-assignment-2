@@ -25,7 +25,7 @@ export async function fetchEvents({
     }
 
     if (category){
-        params.set("classificiationName", category);
+        params.set("classificationName", category);
     }
 
     const response = await fetch(
