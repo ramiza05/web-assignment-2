@@ -79,9 +79,9 @@ function Events(){
                 <option value="Film">Film</option>
                 <option value="Miscellaneous">Miscellaneous</option>
             </select>
-
-            <div>
-                {events.map((event)=>(
+            {events.map((event)=> (
+            <div key={event.id} onClick={() => navigate(`/Events/${event.id}`)} style={{ cursor: "pointer" }}>
+                
                     <article key={event.id}>
                         {event.images?.[0] && (<img src={event.images[0].url} alt={event.name}></img>)}
 
@@ -101,8 +101,8 @@ function Events(){
                             {events.classifications?.[0]?.segment?.name || ""}
                         </p>
                     </article>
-                ))}
-            </div>
+                
+            </div>))}
         </div>
     )
 }

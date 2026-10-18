@@ -18,7 +18,10 @@ function EventDetails(){
 
             try{
                 const apiKey = import.meta.env.VITE_TICKETMASTER_API_KEY;
-                const response = await fetch(`${API_URL}/events/${eventId}.json?apiKey=${encodeURIComponent(apiKey)}`);
+
+                const response = await fetch(
+                `https://app.ticketmaster.com/discovery/v2/events/${eventId}.json?apikey=${encodeURIComponent(apiKey)}`
+                );
 
                 if(!response.ok){
                     throw new Error(`API Error! ${response.status}`);
@@ -82,3 +85,5 @@ function EventDetails(){
         </div>
     )
 }
+
+export default EventDetails;
